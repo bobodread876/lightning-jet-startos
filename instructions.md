@@ -6,7 +6,12 @@
 
 **IMPORTANT** 
 When this service is started it will automatically start rebalancing attempts. *Rebalancing may spend your satoshis!* 
-Please review https://github.com/itsneski/lightning-jet for more details.
+Jet 1.7.0 limits automated rebalances to 100,000 sats in fees over a rolling 24 hours by default, including on existing configurations. Fees already paid on manual rebalances count toward the cap. To change the limit, set `rebalancer.maxDailyFee` in Jet's configuration. A value of `0` disables the cap.
+See the [upstream configuration reference](https://github.com/drneski/lightning-jet/blob/v1.7.0-node22/README.md#config-file) for details.
+
+## Upgrading from 1.6.0.3
+
+Jet 1.7.0 can use the existing configuration and database without conversion. The 1.6.0.3 StartOS wrapper stores Jet's `/app/api/config.json` and `/app/db/jet.db` outside the persistent `/root` volume. If you need custom Jet settings or rebalance history, save a consistent copy of those files before upgrading. The StartOS package backup covers the mounted data volume.
 
 ## Setup
 Please note: the default SSH user is "start9", so you will need to add `sudo` to the beginning of each command below.

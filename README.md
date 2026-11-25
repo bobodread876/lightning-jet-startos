@@ -1,6 +1,6 @@
 # Wrapper for Lightning Jet (or simply Jet)
 
-`lightning-jet` is a command line tool for managing channel balances on LND. This is considered a Power User LND Tool, and is not officially supported by Start9.
+[Lightning Jet](https://github.com/drneski/lightning-jet) is a command line tool for managing channel balances on LND. This is considered a Power User LND Tool, and is not officially supported by Start9.
 
 ## Dependencies
 
@@ -59,7 +59,7 @@ cd embassy-os/backend/
 Clone the project locally. Note the submodule link to the original project(s). 
 
 ```
-git clone https://github.com/islandbitcoin/lightning-jet-startos.git
+git clone https://github.com/bobodread876/lightning-jet-startos.git
 cd lightning-jet-startos
 git submodule update --init --recursive
 ```
