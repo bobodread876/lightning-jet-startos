@@ -16,6 +16,12 @@ COPY lightning-jet/ /app/
 
 RUN npm_config_build_from_source=true npm_config_python=/usr/bin/python3 npm ci --omit=dev
 
+# Jet opens these paths directly. Resolve them into the StartOS main volume.
+RUN mv /app/api/config.json /app/api/config.default.json \
+    && ln -s /root/jet/config.json /app/api/config.json \
+    && ln -s /root/jet/jet.db /app/db/jet.db
+COPY jet-config.cjs /usr/local/lib/jet-config.js
+
 ENV PATH="/app:${PATH}"
 
 ADD ./docker_entrypoint.sh /usr/local/bin/docker_entrypoint.sh

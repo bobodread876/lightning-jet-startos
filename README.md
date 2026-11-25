@@ -2,6 +2,8 @@
 
 [Lightning Jet](https://github.com/drneski/lightning-jet) is a command line tool for managing channel balances on LND. This is considered a Power User LND Tool, and is not officially supported by Start9.
 
+This wrapper targets StartOS 0.3.x. For StartOS 0.4.1 and later, the [Start9 Community package](https://github.com/Start9-Community/lightning-jet-startos/releases/tag/v1.7.0_1) also ships Jet 1.7.0 for ARM64 and x86_64. That release persists configuration, but its SQLite history is lost when its container is recreated.
+
 ## Dependencies
 
 - [docker](https://docs.docker.com/get-docker)
