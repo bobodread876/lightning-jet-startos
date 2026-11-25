@@ -33,18 +33,18 @@ clean:
 scripts/embassy.js: $(TS_FILES)
 	deno run --allow-read --allow-write --allow-env --allow-net scripts/bundle.ts
 
-docker-images/x86_64.tar: Dockerfile docker_entrypoint.sh jet-config.cjs
+docker-images/x86_64.tar: Dockerfile docker_entrypoint.sh jet-config.cjs manifest.yaml
 ifeq ($(ARCH),aarch64)
 else
 	mkdir -p docker-images
-	docker buildx build --tag start9/$(PKG_ID)/main:$(PKG_VERSION) --build-arg PLATFORM=amd64 --build-arg ARCH=x86_64 --platform=linux/amd64 -o type=docker,dest=docker-images/x86_64.tar .
+	docker buildx build --tag start9/$(PKG_ID)/main:$(PKG_VERSION) --build-arg PKG_VERSION=$(PKG_VERSION) --build-arg PLATFORM=amd64 --build-arg ARCH=x86_64 --platform=linux/amd64 -o type=docker,dest=docker-images/x86_64.tar .
 endif
 
-docker-images/aarch64.tar: Dockerfile docker_entrypoint.sh jet-config.cjs
+docker-images/aarch64.tar: Dockerfile docker_entrypoint.sh jet-config.cjs manifest.yaml
 ifeq ($(ARCH),x86_64)
 else
 	mkdir -p docker-images
-	docker buildx build --tag start9/$(PKG_ID)/main:$(PKG_VERSION) --build-arg PLATFORM=arm64 --build-arg ARCH=aarch64 --platform=linux/arm64 -o type=docker,dest=docker-images/aarch64.tar .
+	docker buildx build --tag start9/$(PKG_ID)/main:$(PKG_VERSION) --build-arg PKG_VERSION=$(PKG_VERSION) --build-arg PLATFORM=arm64 --build-arg ARCH=aarch64 --platform=linux/arm64 -o type=docker,dest=docker-images/aarch64.tar .
 endif
 
 $(PKG_ID).s9pk: manifest.yaml instructions.md LICENSE icon.png scripts/embassy.js docker-images/aarch64.tar docker-images/x86_64.tar

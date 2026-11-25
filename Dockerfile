@@ -26,3 +26,7 @@ ENV PATH="/app:${PATH}"
 
 ADD ./docker_entrypoint.sh /usr/local/bin/docker_entrypoint.sh
 RUN chmod a+x /usr/local/bin/docker_entrypoint.sh
+
+# StartOS 0.3 removes the old image ID after an upgrade, even if its tag changed.
+ARG PKG_VERSION
+LABEL org.opencontainers.image.version=$PKG_VERSION
