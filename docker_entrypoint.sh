@@ -1,33 +1,17 @@
 #!/bin/bash
+set -euo pipefail
+umask 077
+cd /app
 
-set -a
-
-echo "Configuring Jet..."
-JET_TOKEN=$(yq e '.token' /root/start9/config.yaml)
-if [ "$JET_TOKEN" != "" ] && [ "$JET_TOKEN" != "null" ]; then
-	echo "Jet Bot Enabled..."
-else
-	echo "Jet Bot Disabled..."
+mkdir -p /root/jet
+# StartOS owns the optional Telegram setting. Pass it as data, without logging it.
+token=
+if [[ -f /root/start9/config.yaml ]]; then
+    token=$(yq e '.token' /root/start9/config.yaml)
 fi
+JET_STARTOS_TOKEN="$token" node /usr/local/lib/jet-config.js
+# Create the target before SQLite opens its symlink so journals use the data volume too.
+touch /root/jet/jet.db
 
-#Configuring Lightning Jet
-sed -i 's/.*"macaroonPath":.*/  "macaroonPath": "\/mnt\/lnd\/admin.macaroon",/' ./api/config.json
-sed -i 's/.*"tlsCertPath":.*/  "tlsCertPath": "\/mnt\/lnd\/tls.cert",/' ./api/config.json
-sed -i '/.*"macaroonPath":.*/a \ \ "serverAddress": "lnd.embassy:10009",' ./api/config.json
-sed -i '/.*"rebalancer":.*/a \ \ \  "minCapacity": 50000,' ./api/config.json
-if [ "$JET_TOKEN" != "" ] && [ "$JET_TOKEN" != "null" ]; then
-    sed -i '/.*"debugMode":.*/a  \ \ "telegramToken": "'$JET_TOKEN'",' ./api/config.json
-fi
-echo "export PATH=$PATH:/app" >> ./.profile
-source ./.profile
-chmod +r /mnt/lnd/readonly.macaroon
-
-#Starting Lightning Jet
-echo "Starting Jet..."
 jet start daddy
-
-# Starting command line
-while true;
-do
-sleep 2000;
-done
+exec sleep infinity
