@@ -1,7 +1,8 @@
 id: lightning-jet
 title: Lightning Jet
-version: 1.7.0.0
+version: 1.7.0.1
 release-notes: |
+  * Clear old active rebalance registrations before starting Jet. Completed rebalances and their paid fees carry over.
   * Update Lightning Jet to 1.7.0 and run it on Node.js 22.
   * Automated rebalances now default to a 100,000-sat fee cap over a rolling 24 hours. This also applies to existing configurations that omit rebalancer.maxDailyFee. Set it to 0 to disable the cap.
   * Jet now keeps its configuration and database on the StartOS data volume. Before updating from 1.6.0.3, follow the carryover instructions while the old container is running. The existing data format is compatible.

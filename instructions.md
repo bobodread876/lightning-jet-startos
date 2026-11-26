@@ -45,7 +45,9 @@ CARRY_OVER
 
 Proceed with the update only after the success message. The SQLite snapshot includes committed changes in the write-ahead log. If Jet has never created a database, the command carries over the configuration alone. If you postpone the update and restart Jet on 1.6.0.3, take a fresh snapshot of any later changes.
 
-Start 1.7.0.0 and check your settings and rebalance history. From this version onward, edit `/root/jet/config.json` inside the container. The package stores it and `/root/jet/jet.db` on the StartOS main data volume, which survives container replacement and is included in package backups. The Telegram token configured in the StartOS UI takes precedence over a token in Jet's file.
+Start the updated package and check your settings and rebalance history. From this version onward, edit `/root/jet/config.json` inside the container. The package stores it and `/root/jet/jet.db` on the StartOS main data volume, which survives container replacement and is included in package backups. The Telegram token configured in the StartOS UI takes precedence over a token in Jet's file.
+
+On each service start, the package clears active rebalance registrations because their process IDs belong to the previous run. Completed rebalances and their fees remain in the rolling daily fee calculation.
 
 ## Setup
 Please note: the default SSH user is "start9", so you will need to add `sudo` to the beginning of each command below.
